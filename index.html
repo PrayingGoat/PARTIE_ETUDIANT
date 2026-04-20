@@ -52,10 +52,10 @@
             --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
             --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
 
-            --radius-sm: 7px;
-            --radius-md: 10px;
-            --radius-lg: 14px;
-            --radius-xl: 19px;
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            --radius-xl: 12px;
             --radius-pill: 9999px;
 
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -103,51 +103,22 @@
 
         .sidebar {
             width: var(--sidebar-expanded);
-            min-width: var(--sidebar-expanded);
-            background-color: var(--sidebar-bg);
-            border-right: none;
+            height: 100vh;
+            background: var(--sidebar-bg);
+            color: white;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
             padding: 24px 16px;
-            z-index: 100;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            color: var(--sidebar-color);
+            flex-shrink: 0;
+            z-index: 1000;
         }
 
         .sidebar.collapsed {
             width: var(--sidebar-collapsed);
             min-width: var(--sidebar-collapsed);
             align-items: center;
-        }
-
-        .sidebar-toggle {
-            position: absolute;
-            right: -12px;
-            top: 25px;
-            width: 26px;
-            height: 26px;
-            background: #1E293B;
-            color: white;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 5;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .sidebar-toggle:hover {
-            background: var(--primary);
-            transform: scale(1.1);
-        }
-
-        .sidebar.collapsed .sidebar-toggle {
-            transform: rotate(180deg);
         }
 
         .logo-area {
@@ -311,13 +282,28 @@
 
         /* Topbar */
         .topbar {
-            height: 90px;
-            min-height: 90px;
+            height: 80px;
+            min-height: 80px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 48px;
             background: transparent;
+            gap: 20px;
+        }
+
+        .mobile-toggle {
+            display: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            background: white;
+            border: 1px solid var(--border-soft);
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-main);
         }
 
         .search-area {
@@ -1147,189 +1133,96 @@
             margin-bottom: 24px;
         }
 
-        /* Responsive Fixes */
+        /* --- RESPONSIVE MOBILE --- */
         @media (max-width: 1024px) {
-            .dashboard-grid, .doc-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .grid-span-3, .grid-span-4 { grid-column: span 2; }
-            .lessons-section { grid-column: span 2 !important; }
-        }
-
-        @media (max-width: 768px) {
-            :root {
-                --sidebar-expanded: 280px;
-                --sidebar-collapsed: 0px; 
-            }
-
             .sidebar {
                 position: fixed;
                 left: -280px;
-                z-index: 1000;
                 height: 100vh;
-                transition: left 0.3s ease;
-                width: 280px !important;
+                box-shadow: 20px 0 50px rgba(0,0,0,0.1);
             }
-
-            .sidebar.mobile-active {
+            .sidebar.mobile-open {
                 left: 0;
             }
-
-            .sidebar-overlay {
-                display: none;
-                position: fixed;
-                inset: 0;
-                background: rgba(16, 24, 40, 0.6);
-                z-index: 999;
-                backdrop-filter: blur(4px);
-            }
-
-            .sidebar-overlay.active {
-                display: block;
-            }
-
             .main-content {
                 width: 100%;
             }
-
             .topbar {
-                padding: 0 20px;
-                height: 70px;
-                min-height: 70px;
+                padding: 0 24px;
             }
-
             .page-scroll {
-                padding: 0 20px 20px 20px;
+                padding: 0 24px 24px 24px;
             }
-
-            .search-area {
-                display: none; 
+            .mobile-toggle {
+                display: flex;
             }
-
-            .dashboard-grid, .doc-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
-
-            .grid-span-3, .grid-span-4, .course-card.recommendation, .lessons-section {
-                grid-column: span 1 !important;
-            }
-
             .welcome-hero {
                 flex-direction: column;
                 min-height: auto;
-                padding-bottom: 20px;
+                padding-bottom: 40px;
             }
-
             .welcome-content {
                 max-width: 100%;
-                padding: 32px 24px;
+                padding: 32px;
             }
-
             .welcome-illustration {
-                display: none; /* Often cleaner on mobile to hide complex hero illustrations */
+                position: relative;
+                width: 100%;
+                height: 200px;
+                border-radius: 0;
             }
+        }
 
+        @media (max-width: 640px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
             .tab-nav-container {
-                overflow-x: auto;
-                padding-bottom: 8px;
-                margin-bottom: 24px;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            .tab-btn {
-                white-space: nowrap;
-                padding: 8px 16px;
-            }
-
-            .mobile-menu-btn {
-                display: flex !important;
-            }
-            
-            .course-card {
-                height: auto;
-                min-height: 180px;
-                padding: 24px;
-            }
-            
-            .course-title {
-                font-size: 20px;
-            }
-
-            .welcome-title {
-                font-size: 28px;
-            }
-
-            .logo-mobile {
-                display: flex !important;
-                align-items: center;
                 gap: 8px;
             }
-
-            .logo-mobile img {
-                height: 28px;
+            .tab-btn {
+                padding: 8px 16px;
+                font-size: 13px;
+                flex: 1 1 calc(50% - 8px);
+                text-align: center;
             }
-
-            .logo-mobile span {
-                font-weight: 700;
-                font-size: 18px;
-                color: var(--text-main);
-                font-family: 'Outfit';
+            .doc-grid {
+                grid-template-columns: 1fr;
             }
-
-            .logo-mobile span span {
-                color: var(--primary);
+            .recommendation-card {
+                padding: 24px;
             }
-
-            .profile-info {
-                display: none; /* Hide name/handle on small mobile */
-            }
-
-            .profile-btn {
-                padding: 4px;
-                gap: 0;
-            }
-
-            .profile-btn i {
-                display: none;
+            .rec-title {
+                font-size: 22px;
             }
         }
+        @media (max-width: 1300px) {
 
-        .logo-mobile {
-            display: none;
-        }
+            .dashboard-grid,
+            .doc-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
 
-        .sidebar-overlay {
-            display: none;
-        }
+            .grid-span-3,
+            .grid-span-4 {
+                grid-column: span 2;
+            }
 
-        .mobile-menu-btn {
-            display: none;
-            width: 42px;
-            height: 42px;
-            border-radius: 10px;
-            background: white;
-            border: 1px solid var(--border-soft);
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            cursor: pointer;
-            margin-right: 12px;
-            color: var(--text-main);
+            .course-card.recommendation {
+                grid-column: span 2;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
     <div class="main-container">
         <!-- SIDEBAR -->
         <aside class="sidebar" id="sidebar">
-            <div class="sidebar-toggle" id="sidebarToggle">
-                <i class="ph-bold ph-caret-left"></i>
-            </div>
-
             <div class="logo-area">
                 <div class="logo-icon">
                     <img src="logo-process-iq.png" alt="Process IQ Logo">
@@ -1396,15 +1289,11 @@
         <main class="main-content">
             <!-- TOPBAR -->
             <header class="topbar">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <button class="mobile-menu-btn" id="mobileMenuBtn">
-                        <i class="ph-bold ph-list"></i>
-                    </button>
-                    <div class="logo-mobile">
-                        <img src="logo-process-iq.png" alt="Logo">
-                        <span>Process<span>IQ</span></span>
-                    </div>
-                    <div class="search-area">
+                <div class="mobile-toggle" id="mobileToggle">
+                    <i class="ph ph-list"></i>
+                </div>
+                
+                <div class="search-area">
                     <input type="text" class="search-input" placeholder="Rechercher des cours, leçons...">
                     <button class="search-btn"><i class="ph ph-magnifying-glass"></i></button>
                 </div>
@@ -2301,6 +2190,26 @@
                     });
                 }
 
+                // Sidebar & Mobile Toggle Logic
+                const sidebar = document.getElementById('sidebar');
+                const mobileToggle = document.getElementById('mobileToggle');
+
+                if (mobileToggle) {
+                    mobileToggle.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        sidebar.classList.toggle('mobile-open');
+                    });
+                }
+
+                // Fermer la sidebar mobile en cliquant en dehors
+                document.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 1024) {
+                        if (sidebar.classList.contains('mobile-open') && !sidebar.contains(e.target)) {
+                            sidebar.classList.remove('mobile-open');
+                        }
+                    }
+                });
+
                 // Add Event Listeners for Tabs
                 tabBtns.forEach(btn => {
                     btn.addEventListener('click', () => {
@@ -2316,31 +2225,15 @@
                         let title = correspondingTab ? correspondingTab.dataset.title : item.getAttribute('title');
 
                         if (item.dataset.target) switchTab(item.dataset.target, title);
+                        
+                        // Ferme la sidebar sur mobile après un clic
+                        if (window.innerWidth <= 1024) {
+                            sidebar.classList.remove('mobile-open');
+                        }
                     });
                 });
             });
-            // Mobile Menu Toggle
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const sidebarOverlay = document.getElementById('sidebarOverlay');
-
-        function toggleMobileMenu() {
-            sidebar.classList.toggle('mobile-active');
-            sidebarOverlay.classList.toggle('active');
-        }
-
-        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
-        sidebarOverlay.addEventListener('click', toggleMobileMenu);
-
-        // Close sidebar when clicking a nav item on mobile
-        const navItemsList = document.querySelectorAll('.nav-item');
-        navItemsList.forEach(item => {
-            item.addEventListener('click', () => {
-                if (window.innerWidth <= 768) {
-                    toggleMobileMenu();
-                }
-            });
-        });
-    </script>
+        </script>
     </div>
 </body>
 
