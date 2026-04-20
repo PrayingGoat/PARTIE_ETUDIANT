@@ -1148,27 +1148,181 @@
         }
 
         /* Responsive Fixes */
-        @media (max-width: 1300px) {
-
-            .dashboard-grid,
-            .doc-grid {
+        @media (max-width: 1024px) {
+            .dashboard-grid, .doc-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            .grid-span-3, .grid-span-4 { grid-column: span 2; }
+            .lessons-section { grid-column: span 2 !important; }
+        }
 
-            .grid-span-3,
-            .grid-span-4 {
-                grid-column: span 2;
+        @media (max-width: 768px) {
+            :root {
+                --sidebar-expanded: 280px;
+                --sidebar-collapsed: 0px; 
             }
 
-            .course-card.recommendation {
-                grid-column: span 2;
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                z-index: 1000;
+                height: 100vh;
+                transition: left 0.3s ease;
+                width: 280px !important;
             }
+
+            .sidebar.mobile-active {
+                left: 0;
+            }
+
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(16, 24, 40, 0.6);
+                z-index: 999;
+                backdrop-filter: blur(4px);
+            }
+
+            .sidebar-overlay.active {
+                display: block;
+            }
+
+            .main-content {
+                width: 100%;
+            }
+
+            .topbar {
+                padding: 0 20px;
+                height: 70px;
+                min-height: 70px;
+            }
+
+            .page-scroll {
+                padding: 0 20px 20px 20px;
+            }
+
+            .search-area {
+                display: none; 
+            }
+
+            .dashboard-grid, .doc-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .grid-span-3, .grid-span-4, .course-card.recommendation, .lessons-section {
+                grid-column: span 1 !important;
+            }
+
+            .welcome-hero {
+                flex-direction: column;
+                min-height: auto;
+                padding-bottom: 20px;
+            }
+
+            .welcome-content {
+                max-width: 100%;
+                padding: 32px 24px;
+            }
+
+            .welcome-illustration {
+                display: none; /* Often cleaner on mobile to hide complex hero illustrations */
+            }
+
+            .tab-nav-container {
+                overflow-x: auto;
+                padding-bottom: 8px;
+                margin-bottom: 24px;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .tab-btn {
+                white-space: nowrap;
+                padding: 8px 16px;
+            }
+
+            .mobile-menu-btn {
+                display: flex !important;
+            }
+            
+            .course-card {
+                height: auto;
+                min-height: 180px;
+                padding: 24px;
+            }
+            
+            .course-title {
+                font-size: 20px;
+            }
+
+            .welcome-title {
+                font-size: 28px;
+            }
+
+            .logo-mobile {
+                display: flex !important;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .logo-mobile img {
+                height: 28px;
+            }
+
+            .logo-mobile span {
+                font-weight: 700;
+                font-size: 18px;
+                color: var(--text-main);
+                font-family: 'Outfit';
+            }
+
+            .logo-mobile span span {
+                color: var(--primary);
+            }
+
+            .profile-info {
+                display: none; /* Hide name/handle on small mobile */
+            }
+
+            .profile-btn {
+                padding: 4px;
+                gap: 0;
+            }
+
+            .profile-btn i {
+                display: none;
+            }
+        }
+
+        .logo-mobile {
+            display: none;
+        }
+
+        .sidebar-overlay {
+            display: none;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: white;
+            border: 1px solid var(--border-soft);
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            margin-right: 12px;
+            color: var(--text-main);
         }
     </style>
 </head>
 
 <body>
 
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
     <div class="main-container">
         <!-- SIDEBAR -->
         <aside class="sidebar" id="sidebar">
@@ -1242,7 +1396,15 @@
         <main class="main-content">
             <!-- TOPBAR -->
             <header class="topbar">
-                <div class="search-area">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="ph-bold ph-list"></i>
+                    </button>
+                    <div class="logo-mobile">
+                        <img src="logo-process-iq.png" alt="Logo">
+                        <span>Process<span>IQ</span></span>
+                    </div>
+                    <div class="search-area">
                     <input type="text" class="search-input" placeholder="Rechercher des cours, leçons...">
                     <button class="search-btn"><i class="ph ph-magnifying-glass"></i></button>
                 </div>
@@ -2157,7 +2319,28 @@
                     });
                 });
             });
-        </script>
+            // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        function toggleMobileMenu() {
+            sidebar.classList.toggle('mobile-active');
+            sidebarOverlay.classList.toggle('active');
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        sidebarOverlay.addEventListener('click', toggleMobileMenu);
+
+        // Close sidebar when clicking a nav item on mobile
+        const navItemsList = document.querySelectorAll('.nav-item');
+        navItemsList.forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    toggleMobileMenu();
+                }
+            });
+        });
+    </script>
     </div>
 </body>
 
