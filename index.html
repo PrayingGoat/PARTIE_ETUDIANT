@@ -2134,16 +2134,11 @@
         <script>
             document.addEventListener('DOMContentLoaded', () => {
                 const sidebar = document.getElementById('sidebar');
-                const sidebarToggle = document.getElementById('sidebarToggle');
+                const mobileToggle = document.getElementById('mobileToggle');
                 const tabBtns = document.querySelectorAll('.tab-btn');
                 const navItems = document.querySelectorAll('.nav-item[data-target]');
                 const sections = document.querySelectorAll('.section-view');
                 const pageTitle = document.getElementById('main-title');
-
-                // Sidebar Toggle
-                sidebarToggle.addEventListener('click', () => {
-                    sidebar.classList.toggle('collapsed');
-                });
 
                 function switchTab(targetId, newTitle) {
                     // Update Page Title
@@ -2190,10 +2185,7 @@
                     });
                 }
 
-                // Sidebar & Mobile Toggle Logic
-                const sidebar = document.getElementById('sidebar');
-                const mobileToggle = document.getElementById('mobileToggle');
-
+                // Mobile Toggle Logic
                 if (mobileToggle) {
                     mobileToggle.addEventListener('click', (e) => {
                         e.stopPropagation();
@@ -2217,7 +2209,7 @@
                     });
                 });
 
-                // Add Event Listeners for Sidebar
+                // Add Event Listeners for Sidebar items
                 navItems.forEach(item => {
                     item.addEventListener('click', () => {
                         // Cherche le titre correspondant dans les onglets du haut (plus précis)
